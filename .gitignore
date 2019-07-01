@@ -1,1 +1,7 @@
 target/
+
+# IDE settings
+
+.idea/
+*.iml
+nb-configuration.xml

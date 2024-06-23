@@ -1,5 +1,6 @@
 package io.github.ken1kasap.stone.lang;
 
+import io.github.ken1kasap.stone.lang.exception.ParseException;
 import java.io.IOException;
 import java.io.LineNumberReader;
 import java.io.Reader;

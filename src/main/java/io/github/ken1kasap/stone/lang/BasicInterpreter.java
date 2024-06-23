@@ -1,5 +1,6 @@
 package io.github.ken1kasap.stone.lang;
 
+import io.github.ken1kasap.stone.lang.exception.ParseException;
 import io.github.ken1kasap.stone.lang.ast.ASTree;
 import io.github.ken1kasap.stone.lang.ast.NullStmnt;
 import io.github.ken1kasap.stone.lang.env.Environment;

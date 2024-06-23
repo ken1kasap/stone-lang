@@ -1,5 +1,6 @@
 package io.github.ken1kasap.stone.lang;
 
+import io.github.ken1kasap.stone.lang.exception.ParseException;
 import io.github.ken1kasap.stone.lang.Parser.Operators;
 import static io.github.ken1kasap.stone.lang.Parser.rule;
 import io.github.ken1kasap.stone.lang.ast.*;

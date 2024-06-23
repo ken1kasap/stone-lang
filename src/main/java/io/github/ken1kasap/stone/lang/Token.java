@@ -1,5 +1,7 @@
 package io.github.ken1kasap.stone.lang;
 
+import io.github.ken1kasap.stone.lang.exception.StoneException;
+
 public abstract class Token {
 
     public static final Token EOF = new Token(-1) {

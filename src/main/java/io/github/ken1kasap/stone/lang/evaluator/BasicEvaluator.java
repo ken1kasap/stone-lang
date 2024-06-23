@@ -1,6 +1,6 @@
 package io.github.ken1kasap.stone.lang.evaluator;
 
-import io.github.ken1kasap.stone.lang.StoneException;
+import io.github.ken1kasap.stone.lang.exception.StoneException;
 import io.github.ken1kasap.stone.lang.Token;
 import io.github.ken1kasap.stone.lang.ast.ASTLeaf;
 import io.github.ken1kasap.stone.lang.ast.ASTList;
@@ -16,13 +16,14 @@ import io.github.ken1kasap.stone.lang.ast.StringLiteral;
 import io.github.ken1kasap.stone.lang.ast.WhileStmnt;
 import io.github.ken1kasap.stone.lang.env.Environment;
 import java.util.List;
+import java.util.Objects;
 import javassist.gluonj.*;
 
 @Reviser
 public class BasicEvaluator {
 
-    public static final int TRUE = 1;
-    public static final int FALSE = 0;
+    public static final Integer TRUE = 1;
+    public static final Integer FALSE = 0;
 
     @Reviser
     public static abstract class ASTreeEx extends ASTree {
@@ -105,7 +106,7 @@ public class BasicEvaluator {
         public Object eval(Environment env) {
             Object v = ((ASTreeEx) operand()).eval(env);
             if (v instanceof Integer) {
-                return new Integer(-((Integer) v).intValue());
+                return -((Integer) v);
             } else {
                 throw new StoneException("bad type for -", this);
             }
@@ -158,26 +159,27 @@ public class BasicEvaluator {
         }
 
         protected Object computeNumber(Integer left, String op, Integer right) {
-            int a = left.intValue();
-            int b = right.intValue();
-            if (op.equals("+")) {
-                return a + b;
-            } else if (op.equals("-")) {
-                return a - b;
-            } else if (op.equals("*")) {
-                return a * b;
-            } else if (op.equals("/")) {
-                return a / b;
-            } else if (op.equals("%")) {
-                return a % b;
-            } else if (op.equals("==")) {
-                return a == b ? TRUE : FALSE;
-            } else if (op.equals(">")) {
-                return a > b ? TRUE : FALSE;
-            } else if (op.equals("<")) {
-                return a < b ? TRUE : FALSE;
-            } else {
-                throw new StoneException("bad operator", this);
+            int a = left;
+            int b = right;
+            switch (op) {
+                case "+":
+                    return a + b;
+                case "-":
+                    return a - b;
+                case "*":
+                    return a * b;
+                case "/":
+                    return a / b;
+                case "%":
+                    return a % b;
+                case "==":
+                    return a == b ? TRUE : FALSE;
+                case ">":
+                    return a > b ? TRUE : FALSE;
+                case "<":
+                    return a < b ? TRUE : FALSE;
+                default:
+                    throw new StoneException("bad operator", this);
             }
         }
     }
@@ -209,7 +211,7 @@ public class BasicEvaluator {
 
         public Object eval(Environment env) {
             Object c = ((ASTreeEx) condition()).eval(env);
-            if (c instanceof Integer && ((Integer) c).intValue() != FALSE) {
+            if (c instanceof Integer && !Objects.equals((Integer) c, FALSE)) {
                 return ((ASTreeEx) thenBlock()).eval(env);
             } else {
                 ASTree b = elseBlock();
@@ -233,7 +235,7 @@ public class BasicEvaluator {
             Object result = 0;
             for (;;) {
                 Object c = ((ASTreeEx) condition()).eval(env);
-                if (c instanceof Integer && ((Integer) c).intValue() == FALSE) {
+                if (c instanceof Integer && Objects.equals((Integer) c, FALSE)) {
                     return result;
                 } else {
                     result = ((ASTreeEx) body()).eval(env);
